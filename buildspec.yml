@@ -5,18 +5,15 @@ phases:
     commands:
       - echo Installing NGINX...
       - sudo yum update -y
-      - sudo yum install -y nginx
+      - sudo yum install httpd -y
   build:
     commands:
       - echo Build started on `date`
       - pwd && ls -la
-      - sudo mkdir -p /var/www/html             # Ensure the directory exists
       - sudo cp index.html /var/www/html/       # Copy index.html to the correct location
   post_build:
     commands:
       - echo Configuring and starting NGINX...
-      - sudo systemctl start nginx             # Start the NGINX service
-      - sudo systemctl enable nginx            # Enable NGINX to start on boot
 artifacts:
   files:
     - '**/*'
