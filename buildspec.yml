@@ -10,6 +10,8 @@ phases:
     commands:
       - echo Build started on `date`
       - pwd && ls -la
+      - cd && pwd && ls -la
+      - cd /var/www/ && ls -la
       - cp index.html /var/www/html      
   post_build:
     commands:
