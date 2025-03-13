@@ -1,0 +1,30 @@
+pipeline{
+    agent any
+    environment {
+        PATH = "$PATH:/C:/Program Files/apache-maven-3.9.3-bin/apache-maven-3.9.3/bin"
+    }
+ stages {
+        stage('clone repo') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/kpradeep710/demo-app.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "build the maven project"
+                bat 'mvn clean package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "connected to ec2-instance and ready to deploy"
+                bat '''
+                scp -i C:/Users/nagub/aws cli/pradeepkumar.pem target/01-maven-web-app.war ec2-user@35.154.165.139:/home/ec2-user/
+                '''
+            }
+        }
+    }
+}
