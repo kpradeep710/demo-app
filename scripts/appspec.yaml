@@ -1,14 +1,9 @@
 version: 0.0
-os: linux
-files:
-  - source: /
-    destination: /var/www/html
-hooks:
-  AfterInstall:
-    - location: scripts/install_nginx.sh
-      timeout: 300
-      runas: root
-  ApplicationStart:
-    - location: scripts/start_nginx.sh
-      timeout: 300
-      runas: root
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:ap-south-1:191371353330:task-definition/demo-task:1"
+        LoadBalancerInfo:
+          ContainerName: "demo"
+          ContainerPort: 80
