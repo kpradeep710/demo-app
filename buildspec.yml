@@ -5,11 +5,7 @@ phases:
     commands:
       - echo "Logging in to Amazon ECR..."
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 191371353330.dkr.ecr.ap-south-1.amazonaws.com
-  pre_build:
-    commands:
-      - echo "Image uri...."
-      - IMAGE_URI=191371353330.dkr.ecr.ap-south-1.amazonaws.com/demo
-      - echo "Image URI: $IMAGE_URI"
+      -  REPOSITORY_URI=191371353330.dkr.ecr.ap-south-1.amazonaws.com/demo
   build:
     commands:
       - echo "Building Docker image..."
