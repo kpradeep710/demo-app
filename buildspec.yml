@@ -3,17 +3,22 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing NGINX...
-      - sudo yum update -y
-      - sudo yum install httpd -y
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 191371353330.dkr.ecr.ap-south-1.amazonaws.com
+  pre_build:
+    commands:
+      - IMAGE_URI=191371353330.dkr.ecr.ap-south-1.amazonaws.com/demo
+      - echo "Image URI: $IMAGE_URI"
   build:
     commands:
-      - echo Build started on `date`
-      - pwd && ls -la
-      - sudo cp index.html /var/www/html/       # Copy index.html to the correct location
+      - echo "Building Docker image..."
+      - docker build -t demo .
+      - docker tag demo:latest 191371353330.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
   post_build:
     commands:
-      - echo Configuring and starting NGINX...
+      - echo "Pushing Docker image to ECR..."
+      - docker push 191371353330.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
+      - echo "Build and push complete."
 artifacts:
   files:
     - '**/*'
